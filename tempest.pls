@@ -19,6 +19,10 @@ let initializeStack(project) = {
 
 let initializeDune(project) = {
     !dune "init" "proj" (project.name)
+    # we build the project once so that ocamllsp works properly
+    chdir(project.name)
+    !dune "build"
+    chdir("..")
     ()
 }
 
