@@ -32,6 +32,16 @@ let initializePolaris(project) = {
     ()
 }
 
+let initializeGleam(project) = {
+    !gleam "new" (project.name)
+    ()
+}
+
+let initializeCargo(project) = {
+    !cargo "init" (project.name)
+    ()
+}
+
 let targetFor(targetName) = match targetName {
     "stack" ->
         Target({ initialize = initializeStack
@@ -41,6 +51,12 @@ let targetFor(targetName) = match targetName {
                })
     "polaris" ->
         Target({ initialize = initializePolaris
+               })
+    "gleam" ->
+        Target({ initialize = initializeGleam
+               })
+    "cargo" ->
+        Target({ initialize = initializeCargo
                })
     targetName -> fail("invalid target: ${targetName}")
 }
@@ -70,14 +86,9 @@ let main() = {
     } with {
         exception_ -> {
             debug("ERROR trying to initialize project: ${exceptionMessage(exception_)}. Cleaning up...")
-            # TODO: cleanup
+            # TODO: cleanup?
             raise exception_
         }
     }
-    # TODO: offer options for 'cleanup', 'evacuate', and 'leave'.
-    # also save all running tempests in some config directory so that
-    # they can be listed with `tempest --list` and `tempest --{cleanup,evacuate} NAME`
-    # act like the interactive options
-    # also, ask for confirmation before cleanup please
 }
 main()
